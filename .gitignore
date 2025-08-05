@@ -1,0 +1,71 @@
+# ========== Unity-specific ignores ==========
+
+# Folders
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+UserSettings/
+MemoryCaptures/
+Recordings/
+Assets/Addressables_Temp/
+Assets/StreamingAssets/aa*
+Assets/AddressableAssetsData/*/*.bin*
+Assets/AddressableAssetsData/link.xml*
+
+# Files
+sysinfo.txt
+*.pidb
+*.pidb.meta
+*.pdb
+*.pdb.meta
+*.mdb
+*.mdb.meta
+*.apk
+*.aab
+*.unitypackage
+*.unitypackage.meta
+*.app
+*.log
+*.tmp
+*.booproj
+*.svd
+*.opendb
+*.VC.db
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.DotSettings.user
+*.blend1
+*.blend1.meta
+*.crashlytics-build.properties
+
+# Visual Scripting auto-gen
+Assets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db
+Assets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db.meta
+Assets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers
+Assets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
+
+# Test scenes
+Assets/InitTestScene*.unity*
+
+# ========== Editor/IDE-specific ignores ==========
+
+.vs/
+.gradle/
+ExportedObj/
+.consulo/
+
+# Rider
+Assets/Plugins/Editor/JetBrains*
+
+# ========== OS-specific ignores ==========
+
+.DS_Store
+Thumbs.db
+desktop.ini
