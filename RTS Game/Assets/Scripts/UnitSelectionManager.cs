@@ -78,23 +78,20 @@ public class UnitSelectionManager : MonoBehaviour
         if (selectedUnits.Contains(unit) == false)
         {
            selectedUnits.Add(unit); // Add the clicked unit to the selected units list
-           TriggerSelectionIndicator(unit, true);
-           EnabledUnitMovement(unit, true); // Enable movement for the newly selected unit
+            SelectUnit(unit, true);
         }
         else
         {
-            EnabledUnitMovement(unit, false); // Disable movement for the deselected unit
-            TriggerSelectionIndicator(unit, false);
+            SelectUnit(unit, false);
             selectedUnits.Remove(unit); // Remove the unit from the selected units list
         }
     }
 
-    private void DeselectAll()
+    public void DeselectAll()
     {
         foreach (var unit in selectedUnits)
         {
-            EnabledUnitMovement(unit, false); // Disable movement for each deselected unit
-            TriggerSelectionIndicator(unit, false);
+            SelectUnit(unit, false);
         }
         groundMarker.SetActive(false);
         selectedUnits.Clear(); // Clear the selected units list
@@ -106,10 +103,14 @@ public class UnitSelectionManager : MonoBehaviour
 
         selectedUnits.Add(unit); // Add the clicked unit to the selected units list
 
-        TriggerSelectionIndicator(unit, true);
-        EnabledUnitMovement(unit, true);
+        SelectUnit(unit, true);
     }
 
+    private void SelectUnit(GameObject unit, bool isSelected)
+    {
+        TriggerSelectionIndicator(unit, isSelected);
+        EnabledUnitMovement(unit, isSelected);
+    }
     private void EnabledUnitMovement(GameObject unit, bool shouldMove)
     {
         unit.GetComponent<UnitMovement>().enabled = shouldMove; 
@@ -118,5 +119,14 @@ public class UnitSelectionManager : MonoBehaviour
     private void TriggerSelectionIndicator(GameObject unit, bool isVisible)
     {
         unit.transform.GetChild(0).gameObject.SetActive(isVisible);
+    }
+
+    internal void DragSelect(GameObject unit)
+    {
+       if (!selectedUnits.Contains(unit))
+        {
+            selectedUnits.Add(unit); // Add the unit to the selected units list
+            SelectUnit(unit, true);
+        }
     }
 }
