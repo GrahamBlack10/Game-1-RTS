@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public class UnitSelectionManager : MonoBehaviour
 {
@@ -11,8 +12,10 @@ public class UnitSelectionManager : MonoBehaviour
     public List<GameObject> selectedUnits = new List<GameObject>();
     public LayerMask clickable; // Layer mask to specify what is considered clickable
     public LayerMask ground; // Layer mask to specify what is considered ground
+    public LayerMask attackable; // Layer mask to specify what is considered attackable
     public Camera cam; // Reference to the main camera
     public GameObject groundMarker;
+    public bool attackCursorVisible;
 
     private void Awake()
     {
@@ -71,6 +74,49 @@ public class UnitSelectionManager : MonoBehaviour
                 groundMarker.SetActive(true); // Show the ground marker
             }
         }
+
+        //Attack Target 
+        if (selectedUnits.Count > 0 && AtleastOneOffensiveUnit(selectedUnits))
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            // If we are hitting a clickable object
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, attackable))
+            {
+                Debug.Log("Enemy Hovered with Mouse");
+
+                attackCursorVisible = true; // Show the attack cursor
+
+                if (Input.GetMouseButtonDown(1)) // Right click to attack
+                {
+                    Transform target = hit.transform; // Get the target to attack
+
+                    foreach (GameObject unit in selectedUnits)
+                    {
+                        if (unit.GetComponent<AttackController>()) // Check if the unit has an AttackController component
+                        {
+                            unit.GetComponent<AttackController>().targettoAttack = target; // Set the target for the attack
+                        }
+                    }
+                }
+            }
+            else
+            {
+                attackCursorVisible = false; // Hide the attack cursor
+            }
+        }
+    }
+
+    private bool AtleastOneOffensiveUnit(List<GameObject> selectedUnits)
+    {
+        foreach (GameObject unit in selectedUnits)
+        {
+            if (unit.GetComponent<AttackController>()) // Check if the unit has an AttackController component
+            {
+                return true; // If at least one unit has an AttackController, return true
+            }  
+        }
+        return false; // If no units have an AttackController, return false
     }
 
     private void MultiSelect(GameObject unit)
