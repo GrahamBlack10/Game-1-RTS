@@ -8,6 +8,9 @@ public class UnitAttackState : StateMachineBehaviour
     AttackController attackController;
     public float stopAttackingDistance = 1.2f;
 
+    public float attackRate = 2f; // Time between attacks
+    public float atttackTimer;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -25,6 +28,16 @@ public class UnitAttackState : StateMachineBehaviour
            LookAtTarget();
 
             agent.SetDestination(attackController.targettoAttack.position);
+
+            if(atttackTimer <= 0)
+            {
+                Attack();
+                atttackTimer = 1f/attackRate; // Reset the attack timer
+            }
+            else
+            {
+                atttackTimer -= Time.deltaTime; // Decrease the timer
+            }
             // Check distance to target
             float distanceFromTarget = Vector3.Distance(attackController.targettoAttack.position, animator.transform.position);
             // If close enough, stop moving and attack
@@ -37,6 +50,13 @@ public class UnitAttackState : StateMachineBehaviour
 
     }
 
+    private void Attack()
+    { 
+        var damageToInflict = attackController.unitDamage;
+
+        attackController.targettoAttack.GetComponent<Unit>().TakeDamage(damageToInflict);
+
+    }
     private void LookAtTarget()
     {
         Vector3 direction = attackController.targettoAttack.position - agent.transform.position;

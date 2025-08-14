@@ -8,17 +8,20 @@ public class AttackController : MonoBehaviour
     public Material idleStateMaterial; // Material for idle state
     public Material attackStateMaterial; // Material for attack state
     public Material followStateMaterial; // Material for follow state
+    public int unitDamage;
+
+    public bool isPlayer; // Flag to check if the unit is a player  
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy") && targettoAttack == null)        
+        if (isPlayer && other.CompareTag("Enemy") && targettoAttack == null)        
         {
             targettoAttack = other.transform; // Set the target to the enemy that entered the trigger   
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Enemy") && targettoAttack !=null )        
+        if (isPlayer && other.CompareTag("Enemy") && targettoAttack !=null )        
         {
             targettoAttack = null; // Clear the target when the enemy exits the trigger
         }

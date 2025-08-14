@@ -69,7 +69,6 @@ public class UnitSelectionManager : MonoBehaviour
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground))
             {
                groundMarker.transform.position = hit.point; // Move the ground marker to the clicked position
-                groundMarker.transform.position = hit.point + Vector3.up * 0.1f;
                 groundMarker.SetActive(false);
                 groundMarker.SetActive(true); // Show the ground marker
             }
