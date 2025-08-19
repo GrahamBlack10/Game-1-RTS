@@ -17,6 +17,7 @@ public class UnitAttackState : StateMachineBehaviour
         agent = animator.GetComponent<NavMeshAgent>();
         attackController = animator.GetComponent<AttackController>();
         attackController.SetAttackMaterial(); // Set the material to attack state
+        attackController.muzzleEffect.gameObject.SetActive(true); // Activate the muzzle effect
 
     }
 
@@ -25,14 +26,16 @@ public class UnitAttackState : StateMachineBehaviour
     {
         if (attackController.targettoAttack != null && animator.transform.GetComponent<UnitMovement>().isCommandedToMove == false)
         {
-           LookAtTarget();
+            LookAtTarget();
 
-            agent.SetDestination(attackController.targettoAttack.position);
+            // agent.SetDestination(attackController.targettoAttack.position);
 
-            if(atttackTimer <= 0)
+            if (atttackTimer <= 0)
             {
                 Attack();
-                atttackTimer = 1f/attackRate; // Reset the attack timer
+                animator.SetTrigger("AttackTrigger");
+                animator.SetBool("isAttacking", true); // Set the attacking state
+                atttackTimer = 1f / attackRate; // Reset the attack timer
             }
             else
             {
@@ -46,7 +49,10 @@ public class UnitAttackState : StateMachineBehaviour
                 animator.SetBool("isAttacking", false); // Move to Follow State
             }
         }
-
+        else 
+        {
+            animator.SetBool("isAttacking", false); // Move to Follow State
+        }
 
     }
 
@@ -70,6 +76,6 @@ public class UnitAttackState : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
+        attackController.muzzleEffect.gameObject.SetActive(false); // Deactivate the muzzle effect
     }
 }
