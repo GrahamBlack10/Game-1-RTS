@@ -104,6 +104,33 @@ public class UnitSelectionManager : MonoBehaviour
                 attackCursorVisible = false; // Hide the attack cursor
             }
         }
+
+        CursorSelector();
+    }
+
+    private void CursorSelector()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickable))
+        {
+           CursorManager.Instance.SetMarkerType(CursorManager.CursorType.Selectable);
+            
+        }
+        else if (Physics.Raycast(ray, out hit, Mathf.Infinity, attackable) 
+            && selectedUnits.Count > 0 && AtleastOneOffensiveUnit(selectedUnits))
+        {
+            CursorManager.Instance.SetMarkerType(CursorManager.CursorType.Attackable);
+        }
+        else if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground) && selectedUnits.Count > 0)
+        {
+            CursorManager.Instance.SetMarkerType(CursorManager.CursorType.Walkable);
+        }
+        else
+        {
+            CursorManager.Instance.SetMarkerType(CursorManager.CursorType.None);
+        }
     }
 
     private bool AtleastOneOffensiveUnit(List<GameObject> selectedUnits)

@@ -8,11 +8,13 @@ public class UnitMovement : MonoBehaviour
     public LayerMask ground; // Layer mask to specify what is considered ground
     public bool isCommandedToMove; // Flag to check if the unit is commanded to move 
 
+    DirectionIndicator directionIndicator; // Reference to the DirectionIndicator component
 
     private void Start()
         {
         cam = Camera.main; // Get the main camera
         agent = GetComponent<NavMeshAgent>(); // Get the NavMeshAgent component attached to this GameObject
+        directionIndicator = GetComponent<DirectionIndicator>(); // Get the DirectionIndicator component attached to this GameObject
     }
     private void Update()
         {
@@ -26,6 +28,7 @@ public class UnitMovement : MonoBehaviour
                 {
                 isCommandedToMove = true; // Set the flag to true indicating the unit is commanded to move
                 agent.SetDestination(hit.point); // Set the agent's destination to the point where the ray hit
+                directionIndicator.DrawLine(hit); // Draw the direction indicator line to the target position
             }
             }
         // Agent reached destination
